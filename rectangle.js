@@ -32,7 +32,7 @@ var makeBalloonsData = function(words) {
     return balloons;
 };
 
-data = ["vijay","gaurav","vijay","gaurav"];
+var data = ["vijay","gaurav","vijay","gaurav"];
 
 var wordBalloons = makeBalloonsData(data);
 
@@ -48,10 +48,15 @@ var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom);
 
-var group = svg.selectAll("g")
-    .data(wordBalloons).enter().append("g")
-    .attr("id","balloons")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+var group = function() {
+    svg.selectAll("g")
+        .data(wordBalloons).enter().append("g")
+        .attr("id","balloons")
+        .classed('randomBalloones', true)
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+};
+
+group();
 
 svg.append("svg:rect")
     .attr("width", rect[2] - rect[0])
@@ -62,7 +67,8 @@ svg.append("svg:rect")
     .style("stroke", "#222222");
 
 
-var circle = svg.selectAll("#balloons")
+var appendCircle = function() {
+    return svg.selectAll("#balloons")
     .append("circle")
     .attr("r", function(d) { return d.radius; })
     .attr("cx", function(d) { return d.x; })
@@ -70,10 +76,18 @@ var circle = svg.selectAll("#balloons")
     .style("fill", function(d) { return d.color; })
     .text(function(d){return d.text});
 
-var text = svg.selectAll("#balloons").append("text")
+};
+
+circle = appendCircle();
+
+var appendText = function() {
+    return svg.selectAll("#balloons").append("text")
     .attr("dx", function(d){return d.x})
     .attr("dy", function(d){return d.y})
     .text(function(d){return d.text});
+};
+
+text = appendText();
 
 function tick() {
     circle
@@ -85,6 +99,22 @@ function tick() {
         .attr("dy", function(d) { return d.y; });
 };
 
+var reloadBalloons = function() {
+    d3.selectAll('.randomBalloones').remove();
+    group();
+    var circle = appendCircle();
+    var text = appendText();
+
+    function tick() {
+        circle
+            .each(gravity(.1))
+            .attr("cy", function(d) { return d.y; });
+        text
+            .each(gravity(.1))
+            .attr("dy", function(d) { return d.y; });
+    };
+};
+
 // Move nodes toward cluster focus.
 var gravity = function(alpha) {
     return function(d) {
@@ -94,4 +124,8 @@ var gravity = function(alpha) {
         if(d.y<rect[3]-80)
             d.y = d.y + (-1 * d.speedY * alpha);
     };
+};
+
+window.onload = function() {
+    var timeInterval = setInterval(reloadBalloons, 5000);
 };
