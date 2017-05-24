@@ -18,31 +18,39 @@ var getBalloon = function(radius, xAxis, yAxis, speed, charactor) {
     };
 };
 
-var makeBalloonsData = function(data) {
+var makeBalloonsData = function(word) {
     var balloons = [];
     var balloonsDiameter = 50;
-    var length = data.charactors.length;
+    var characters = word.split("");
+    var length = characters.length;
+    var balloonXPosition = rect[2]/2;
+    var balloonRadius = 25;
+    var balloonYPosition = 60;
+    var speed = 3;
 
     for(count = 0; count < length ; count++){
-        var x = (data.x) + (length - (balloonsDiameter*(length/2 - count)));
-        balloons.push(getBalloon(data.radius, x, data.y, data.speed, data.charactors[count]));
+        var x = (balloonXPosition) + (length - (balloonsDiameter*(length/2 - count)));
+        balloons.push(getBalloon(balloonRadius, x, balloonYPosition, speed, characters[count]));
     }
 
     return balloons;
 };
 
-var data = {
-    radius: 25,
-    y: 60,
-    x: rect[2]/2,
-    speed: 3,
-    charactors: ["G","a","u","r","a","v"]
-};
+var generateWordBallons = function(data) {
+    var wordsBalloons = [];
+    data.forEach(function(word){
+        wordsBalloons.push(makeBalloonsData(word));
+    });
 
-var nodes = makeBalloonsData(data);
+  return wordsBalloons;
+};
+data = ["v","g"];
+
+var wordBalloons= generateWordBallons(data);
+
 
 var force = d3.layout.force()
-    .nodes(nodes)
+    .nodes(wordBalloons[0])
     .size([width, height])
     .gravity(0)
     .on("tick", tick)
@@ -53,7 +61,7 @@ var svg = d3.select("body").append("svg")
     .attr("height", height + margin.top + margin.bottom);
 
 var group = svg.selectAll("g")
-    .data(nodes).enter().append("g")
+    .data(wordBalloons[0]).enter().append("g")
     .attr("id","balloons")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -87,15 +95,15 @@ function tick() {
     text
         .each(gravity(.1))
         .attr("dy", function(d) { return d.y; });
-}
+};
 
 // Move nodes toward cluster focus.
-function gravity(alpha) {
+var gravity = function(alpha) {
     return function(d) {
         if ((d.y - d.radius - 2) < rect[1])
             d.speedY = -1 * Math.abs(d.speedY);
 
-        if(d.y<rect[3]-50)
+        if(d.y<rect[3]-80)
             d.y = d.y + (-1 * d.speedY * alpha);
     };
-}
+};
