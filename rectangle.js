@@ -1,5 +1,5 @@
 var margin = {top: 0, right: 0, bottom: 0, left: 0},
-    width = 960 - margin.left - margin.right,
+    width = 900 - margin.left - margin.right,
     height = 700 - margin.top - margin.bottom;
 
 var rect = [50,50, width - 50, height - 50];
@@ -7,50 +7,38 @@ var rect = [50,50, width - 50, height - 50];
 var colorRange = 10,
     color = d3.scale.category10().domain(d3.range(colorRange));
 
-var getBalloon = function(radius, xAxis, yAxis, speed, charactor) {
+var getBalloon = function(radius, xAxis, yAxis, speed, word) {
     return {
         radius: radius,
         color: color(Math.floor(Math.random() * colorRange)),
         x: xAxis,
         y: yAxis,
         speedY: speed,
-        text: charactor
+        text: word
     };
 };
 
-var makeBalloonsData = function(word) {
+var makeBalloonsData = function(words) {
     var balloons = [];
-    var balloonsDiameter = 50;
-    var characters = word.split("");
-    var length = characters.length;
     var balloonXPosition = rect[2]/2;
-    var balloonRadius = 25;
+    var balloonRadius = 50;
     var balloonYPosition = 60;
     var speed = 3;
 
-    for(count = 0; count < length ; count++){
-        var x = (balloonXPosition) + (length - (balloonsDiameter*(length/2 - count)));
-        balloons.push(getBalloon(balloonRadius, x, balloonYPosition, speed, characters[count]));
-    }
+    words.forEach(function(word){
+        balloons.push(getBalloon(balloonRadius, balloonXPosition, balloonYPosition, speed, word));
+    });
 
     return balloons;
 };
 
-var generateWordBallons = function(data) {
-    var wordsBalloons = [];
-    data.forEach(function(word){
-        wordsBalloons.push(makeBalloonsData(word));
-    });
+data = ["vijay","gaurav","vijay","gaurav"];
 
-  return wordsBalloons;
-};
-data = ["v","g"];
-
-var wordBalloons= generateWordBallons(data);
+var wordBalloons = makeBalloonsData(data);
 
 
 var force = d3.layout.force()
-    .nodes(wordBalloons[0])
+    .nodes(wordBalloons)
     .size([width, height])
     .gravity(0)
     .on("tick", tick)
@@ -61,7 +49,7 @@ var svg = d3.select("body").append("svg")
     .attr("height", height + margin.top + margin.bottom);
 
 var group = svg.selectAll("g")
-    .data(wordBalloons[0]).enter().append("g")
+    .data(wordBalloons).enter().append("g")
     .attr("id","balloons")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
