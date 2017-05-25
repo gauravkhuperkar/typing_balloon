@@ -1,0 +1,20 @@
+{
+  "name": "typing_balloon",
+  "version": "1.0.0",
+  "description": "Spiking Simple balloon game",
+  "main": "rectangle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/screwJack/typing_balloon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/screwJack/typing_balloon/issues"
+  },
+  "homepage": "https://github.com/screwJack/typing_balloon#readme"
+}

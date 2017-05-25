@@ -1,0 +1,78 @@
+:root {
+    height: 50%;
+    width: 40%;
+}
+
+body {
+    width: 100%;
+    margin: 0 auto;
+    padding: 2%;
+    background-color: antiquewhite;
+}
+
+.balloons {
+    position: absolute;
+    width:30px;
+    height: 30px;
+    font: bold 14px verdana;
+    background-color: yellow;
+    text-align: center;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    vertical-align: middle;
+    padding: 5px;
+}
+
+#start {
+    width: 50px;
+    padding: 10px 15px;
+    text-align: center;
+    font:bold 15px arial;
+    background-color: #dedede;
+    color: #000;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    position: absolute;
+    margin-top: 24%;
+    margin-left: 49%;
+}
+
+#start:hover {
+    cursor: pointer;
+}
+
+.type_area {
+    position: relative;
+    height: 5%;
+    width: 80%;
+    font-size: 20px;
+    font-family: sans-serif;
+    font-weight: 100;
+    color: #393939;
+    top: 85%;
+    margin-left: 10%;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.show {
+    visibility: visible;
+}
+
+#game_container{
+    position: absolute;
+    background-color: lightblue;
+    width: 50%;
+    height: 80%;
+    padding: 2%;
+}
+
+#deadLine {
+    position: relative;
+    display: inline-block;
+    top: 80%;
+    border-color: red;
+    width: 100%;
+}
